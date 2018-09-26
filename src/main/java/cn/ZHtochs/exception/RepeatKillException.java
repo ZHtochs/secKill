@@ -5,7 +5,7 @@ package cn.ZHtochs.exception;
  * @author: zhuhe
  * @create: 2018-09-25 11:33
  **/
-public class RepeatKillException extends RuntimeException{
+public class RepeatKillException extends SeckillException{
     public RepeatKillException(String message) {
 
         super(message);

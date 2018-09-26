@@ -5,7 +5,7 @@ package cn.ZHtochs.exception;
  * @author: zhuhe
  * @create: 2018-09-25 14:51
  **/
-public class SeckillColseException extends RuntimeException {
+public class SeckillColseException extends SeckillException {
     public SeckillColseException(String message, Throwable cause) {
         super(message, cause);
     }

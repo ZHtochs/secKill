@@ -20,7 +20,7 @@ public interface SeckillDao
      */
     int reduceNumber(@Param("seckillId") long seckillId, @Param("killTime") Date killTime);
 //    int reduceNumber(long seckillId, Date killTime);
-//
+
     /**
      * 根据id查询秒杀的商品信息
      * @param seckillId
