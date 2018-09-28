@@ -2,6 +2,7 @@ package cn.ZHtochs.service.impl;
 
 import cn.ZHtochs.dao.SeckillDao;
 import cn.ZHtochs.dao.SuccessKilledDao;
+import cn.ZHtochs.dao.cache.RedisDao;
 import cn.ZHtochs.dto.Exposer;
 import cn.ZHtochs.dto.SeckillExecution;
 import cn.ZHtochs.entity.Seckill;
@@ -35,6 +36,8 @@ public class SeckillServiceImpl implements SeckillService {
     private SeckillDao seckillDao;
     @Autowired
     private SuccessKilledDao successKilledDao;
+    @Autowired
+    private RedisDao redisDao;
     //用于混淆md5
     private final String slat = "dsfs@#$NJ@!L<)L. EA+*/";
 
@@ -50,10 +53,19 @@ public class SeckillServiceImpl implements SeckillService {
 
     @Override
     public Exposer exportSeckillUrl(long seckillId) {
-        Seckill seckill = seckillDao.queryById(seckillId);
+        //使用redis缓存，降低MySQL压力
+        //1.访问redi
+        Seckill seckill=redisDao.getSeckill(seckillId);
         if (seckill == null) {
-            return new Exposer(false, seckillId);
+            //2.访问数据库
+            seckill=seckillDao.queryById(seckillId);
+            if (seckill==null){
+                return new Exposer(false,seckillId);
+            }else {
+                redisDao.putSeckill(seckill);
+            }
         }
+
         Date startTime = seckill.getStartTime();
         Date endTime = seckill.getEndTime();
         //当前系统时间
