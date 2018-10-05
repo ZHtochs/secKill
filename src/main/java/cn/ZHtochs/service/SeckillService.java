@@ -42,11 +42,19 @@ public interface SeckillService {
     Exposer exportSeckillUrl(long seckillId);
     /**
      * 执行秒杀操作
+     * 通过异常告诉spring 声明式事务是提交还是回滚
     * @Param: [seckillId, userPhone, md5]
     * @return: void
      */
 
     SeckillExecution executeSeckill(long seckillId, long userPhone, String md5)
-            throws  RepeatKillException, SeckillColseException,SeckillException;
+            throws  RepeatKillException, SeckillColseException,SeckillException; /**
+     * 执行秒杀操作 存储过程
+    * @Param: [seckillId, userPhone, md5]
+    * @return: void
+     */
+
+    SeckillExecution executeSeckillProcedure(long seckillId, long userPhone, String md5);
+
 
 }
